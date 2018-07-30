@@ -90,6 +90,7 @@
 								<div class="form-group col-xs-2">
 									<button type="button" class="btn btn-default pull right" onclick="submitFunction()">전송</button>
 								<div class="clearfix"></div>
+								</div>
 							</div>
 						</div>
 					</div>

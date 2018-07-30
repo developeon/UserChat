@@ -38,5 +38,4 @@ public class ChatDTO {
 		this.chatTime = chatTime;
 	}
 	
-	
 }

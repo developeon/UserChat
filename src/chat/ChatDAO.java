@@ -133,6 +133,6 @@ public class ChatDAO {
 				e.printStackTrace();
 			}
 		}
-		return -1; //DB 에러
+		return -1; //DB에러
 	}
 }

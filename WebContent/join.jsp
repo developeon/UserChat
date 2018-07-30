@@ -48,6 +48,12 @@
 		if (session.getAttribute("userID") != null) {
 			userID = (String) session.getAttribute("userID");
 		}
+		if(userID != null){
+			session.setAttribute("messageType", "오류 메세지");
+			session.setAttribute("messageContent", "로그인이 되어있는 상태입니다.");
+			response.sendRedirect("index.jsp");
+			return;
+		}
 	%>
 	<nav class="navbar navbar-default">
 		<div class="navbar-header">
@@ -79,79 +85,65 @@
 				</li>
 			</ul>
 			<%
-				} else{
-			%>
-			<ul class="nav navbar-nav navbar-right">
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle"
-						data-toggle="dropdown" role="button" aria-haspopup="ture"
-						aria-expanded="false">회원관리<span class="caret"></span></a>
-					<ul class="dropdown-menu">
-					</ul>
-				</li>
-			</ul>	
-			<% 
-				}
+				} 
 			%>
 		</div>
 	</nav>
 	<div class="container">
-		<div class="container">
-			<form method="post" action="userRegister">
-				<table class="table table-bordered table-hover" style="text-align:center; border: 1px solid #dddddd">
-					<thead>
-						<tr>
-							<th colspan="3"><h4>회원 등록 양식</h4></th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td style="width: 110px"><h5>아이디</h5></td>
-							<td><input type="text" class="form-control" id="userID" name="userID" maxLength="20" placeholder="아이디를 입력하세요."></td>
-							<td style="width: 110px;"><button type="button" class="btn btn-primary" onClick="registerCheckFunction();">중복체크</button></td>
-						</tr>
-						<tr>
-							<td style="width: 110px"><h5>비밀번호</h5></td>
-							<td colspan="2"><input onkeyup="passwordCheckFunction()" type="password" class="form-control" id="userPassword1" name="userPassword1" maxLength="20" placeholder="비밀번호를 입력하세요."></td>
-						</tr>
-						<tr>
-							<td style="width: 110px"><h5>비밀번호 확인</h5></td>
-							<td colspan="2"><input onkeyup="passwordCheckFunction()" type="password" class="form-control" id="userPassword2" name="userPassword2" maxLength="20" placeholder="비밀번호 확인을 입력하세요."></td>
-						</tr>
-						<tr>
-							<td style="width: 110px"><h5>이름</h5></td>
-							<td colspan="2"><input type="text" class="form-control" id="userName" name="userName" maxLength="20" placeholder="이름을 입력하세요."></td>
-						</tr>
-						<tr>
-							<td style="width: 110px"><h5>나이</h5></td>
-							<td colspan="2"><input type="number" class="form-control" id="userAge" name="userAge" min ="1" max="999" placeholder="나이를 입력하세요."></td>
-						</tr>
-						<tr>
-							<td style="width: 110px"><h5>성별</h5></td>
-							<td colspan="2">
-								<div class="form-group" style="text-align: center; margin: 0px auto">
-									<div class="btn-group" data-toggle="buttons">
-										<label class="btn btn-primary active"> 
-											<input type="radio" name="userGender" autocomplete="off" value="여자" checked>여자
-										</label> 
-										<label class="btn btn-primary"> 
-											<input type="radio" name="userGender" autocomplete="off" value="남자">남자
-										</label>
-									</div>
+		<form method="post" action="userRegister">
+			<table class="table table-bordered table-hover" style="text-align:center; border: 1px solid #dddddd">
+				<thead>
+					<tr>
+						<th colspan="3"><h4>회원 등록 양식</h4></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td style="width: 110px"><h5>아이디</h5></td>
+						<td><input type="text" class="form-control" id="userID" name="userID" maxLength="20" placeholder="아이디를 입력하세요."></td>
+						<td style="width: 110px;"><button type="button" class="btn btn-primary" onClick="registerCheckFunction();">중복체크</button></td>
+					</tr>
+					<tr>
+						<td style="width: 110px"><h5>비밀번호</h5></td>
+						<td colspan="2"><input onkeyup="passwordCheckFunction()" type="password" class="form-control" id="userPassword1" name="userPassword1" maxLength="20" placeholder="비밀번호를 입력하세요."></td>
+					</tr>
+					<tr>
+						<td style="width: 110px"><h5>비밀번호 확인</h5></td>
+						<td colspan="2"><input onkeyup="passwordCheckFunction()" type="password" class="form-control" id="userPassword2" name="userPassword2" maxLength="20" placeholder="비밀번호 확인을 입력하세요."></td>
+					</tr>
+					<tr>
+						<td style="width: 110px"><h5>이름</h5></td>
+						<td colspan="2"><input type="text" class="form-control" id="userName" name="userName" maxLength="20" placeholder="이름을 입력하세요."></td>
+					</tr>
+					<tr>
+						<td style="width: 110px"><h5>나이</h5></td>
+						<td colspan="2"><input type="number" class="form-control" id="userAge" name="userAge" min ="1" max="999" placeholder="나이를 입력하세요."></td>
+					</tr>
+					<tr>
+						<td style="width: 110px"><h5>성별</h5></td>
+						<td colspan="2">
+							<div class="form-group" style="text-align: center; margin: 0px auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-primary active"> 
+										<input type="radio" name="userGender" autocomplete="off" value="여자" checked>여자
+									</label> 
+									<label class="btn btn-primary"> 
+										<input type="radio" name="userGender" autocomplete="off" value="남자">남자
+									</label>
 								</div>
-							</td>
-						</tr>
-						<tr>
-							<td style="width: 110px"><h5>이메일</h5></td>
-							<td colspan="2"><input type="email" class="form-control" id="userEmail" name="userEmail" maxLength="50"></td>
-						</tr>
-						<tr>
-							<td style="text-align: left;" colspan="3"><h5 style="color:red;" id="passwordCheckMessage"></h5><input class="btn btn-primary pull-right" type="submit"  value="회원가입"></td>
-						</tr>
-					</tbody>
-				</table>
-			</form>
-		</div>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td style="width: 110px"><h5>이메일</h5></td>
+						<td colspan="2"><input type="email" class="form-control" id="userEmail" name="userEmail" maxLength="50"></td>
+					</tr>
+					<tr>
+						<td style="text-align: left;" colspan="3"><h5 style="color:red;" id="passwordCheckMessage"></h5><input class="btn btn-primary pull-right" type="submit"  value="회원가입"></td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
 	</div>
 	<%
 		String messageContent = null;

@@ -17,6 +17,12 @@
 		if (session.getAttribute("userID") != null) {
 			userID = (String) session.getAttribute("userID");
 		}
+		if(userID != null){
+			session.setAttribute("messageType", "오류 메세지");
+			session.setAttribute("messageContent", "로그인이 되어있는 상태입니다.");
+			response.sendRedirect("index.jsp");
+			return;
+		}
 	%>
 	<nav class="navbar navbar-default">
 		<div class="navbar-header">
@@ -48,70 +54,36 @@
 				</li>
 			</ul>
 			<%
-				} else{
-			%>
-			<ul class="nav navbar-nav navbar-right">
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle"
-						data-toggle="dropdown" role="button" aria-haspopup="ture"
-						aria-expanded="false">회원관리<span class="caret"></span></a>
-					<ul class="dropdown-menu">
-						<li><a href="logoutAction.jsp">로그아웃</a></li>
-					</ul>
-				</li>
-			</ul>	
-			<% 
-				}
+				} 
 			%>
 		</div>
 	</nav>
 	
-	<div class="container bootstrap snippet">
-		<div class="row">
-			<div class="col-xs-12">
-				<div class="portlet portlet-default">
-					<div class="portlet-heading">
-						<div class="portlet-title">
-							<h4><i class="fa fa-circle text-green"></i>실시간 채팅창</h4>
-						</div>
-						<div class="clearfix"></div>
-					</div>
-					<div id="chat" class="panel-collapse collapse in">
-						<div id="chatList" class="portlet-body chat-widget" style="overflow-y:auto;width:auto;height:600px"></div>
-						<div class="portlet-footer">
-							<div class="row">
-								<div class="form-group col-xs-4">
-									<input style="height: 40px;" type="text" id="chatName" class="form-control" placeholder="이름" maxlength="8">
-								</div>
-							</div>
-							<div class="row" style="height: 90px;">
-								<div class="form-group col-xs-10">
-									<textarea style="height: 80px;" id="chatContent" class="form-control" placeholder="메세지를 입력하세요." maxlength="100"></textarea>
-								</div>
-								<div class="form-group col-xs-2">
-									<button type="button" class="btn btn-default pull right" onclick="submitFunction()">전송</button>
-								<div class="clearfix"></div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+	<div class="container">
+		<form method="post" action="./userLogin">
+			<table class="table table-bordered table-hover" style="text-align:center; border: 1px solid #dddddd">
+				<thead>
+					<tr>
+						<th colspan="2"><h4>로그인 양식</h4></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td style="width: 110px"><h5>아이디</h5></td>
+						<td><input type="text" class="form-control" id="userID" name="userID" maxLength="20" placeholder="아이디를 입력하세요."></td>
+					</tr>
+					<tr>
+						<td style="width: 110px"><h5>비밀번호</h5></td>
+						<td colspan="2"><input type="password" class="form-control" id="userPassword" name="userPassword" maxLength="20" placeholder="비밀번호를 입력하세요."></td>
+					</tr>
+					<tr>
+						<td style="text-align: left;" colspan="2"><input class="btn btn-primary pull-right" type="submit"  value="로그인"></td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
 	</div>
 	
-	<!-- 메세지 전송 결과 모달 팝업창 -->
-	<div class="alert alert-success" id="successMessage" style="display: none;">
-		<strong>메세지 전송에 성공했습니다.</strong>
-	</div>
-	<div class="alert alert-danger" id="dangerMessage" style="display: none;">
-		<strong>이름과 내용을 모두 입력하세요.</strong>
-	</div>
-	<div class="alert alert-warning" id="warningMessage" style="display: none;">
-		<strong>데이터베이스 오류가 발생했습니다.</strong>
-	</div>
-	
-	<!-- 모달 팝업창 Start -->
 	<%
 		String messageContent = null;
 		if(session.getAttribute("messageContent") != null){
@@ -153,6 +125,26 @@
 		session.removeAttribute("messageContent");
 		}
 	%>
-	<!-- 모달 팝업창 End -->
+	<div class="modal fade" id="checkModal" tabindex="1" role="dialog" aria-hidden="ture">
+		<div class="vertical-alignment-helper">
+			<div class="modal-dialog vertical-align-center">
+				<div id="checkType" class="modal-content panel-info">
+					<div class="modal-header panel-heading">
+						<button type="button" class="close" data-dismiss="modal">
+							<span aria-hidden="true">&times;</span>
+							<span class="sr-only">Close</span>
+						</button>
+						<h4 class="modal-title">확인 메세지</h4>
+					</div>
+					<div id="checkMessage" class="modal-body">
+						<%= messageContent %>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-dismiss="modal">확인</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

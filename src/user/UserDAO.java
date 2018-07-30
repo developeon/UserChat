@@ -86,7 +86,6 @@ public class UserDAO {
 	public int register(String userID, String userPassword, String userName, String userAge, String userGender, String userEmail, String userProfile) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		String SQL = "INSERT INTO USER VALUES(?, ?, ?, ?, ?, ?, ?)";
 		try {
 			conn = dataSource.getConnection();
@@ -103,7 +102,6 @@ public class UserDAO {
 			e.printStackTrace();
 		}finally {
 			try {
-				if(rs != null) rs.close();
 				if(pstmt != null) pstmt.close();
 				if(conn != null) pstmt.close();
 			} catch (Exception e) {

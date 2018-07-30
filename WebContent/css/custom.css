@@ -1,6 +1,6 @@
-@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
-@import url(http://fonts.googleapis.com/earlyaccess/hanna.css);
-@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
+@import url(http://fonts/googleapis.com/earlyaccess/nanumgothic.css);
+@import url(http://fonts/googleapis.com/earlyaccess/hana.css);
+@import url(http://fonts/googleapis.com/earlyaccess/notosanskr.css);
 
 * {
 	font-family: 'Nanum Gothic';
@@ -44,6 +44,7 @@ tr td:last-child,
 tr th:last-child{
 	border-top-right-radius:6px;
 	border-bottom-right-radius: 6px;
+<<<<<<< HEAD
 }
 
 /* 모달 팝업창 관련 디자인 처리 */
@@ -235,3 +236,6 @@ tr th:last-child{
 .text-red {
     color: #e74c3c;
 }                
+=======
+}
+>>>>>>> b34f9fe15f05c711f7082b72d0635c0ca7a17915

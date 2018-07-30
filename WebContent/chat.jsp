@@ -99,17 +99,6 @@
 		</div>
 	</div>
 	
-	<!-- 메세지 전송 결과 모달 팝업창 -->
-	<div class="alert alert-success" id="successMessage" style="display: none;">
-		<strong>메세지 전송에 성공했습니다.</strong>
-	</div>
-	<div class="alert alert-danger" id="dangerMessage" style="display: none;">
-		<strong>이름과 내용을 모두 입력하세요.</strong>
-	</div>
-	<div class="alert alert-warning" id="warningMessage" style="display: none;">
-		<strong>데이터베이스 오류가 발생했습니다.</strong>
-	</div>
-	
 	<!-- 모달 팝업창 Start -->
 	<%
 		String messageContent = null;

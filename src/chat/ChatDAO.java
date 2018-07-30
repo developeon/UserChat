@@ -115,7 +115,7 @@ public class ChatDAO {
 	public int submit(String fromID, String toID, String chatContent){
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		String SQL = "INESRT INTO CHAT (NULL, ?, ?, ?, NOW())";
+		String SQL = "INSERT INTO CHAT VALUES(NULL, ?, ?, ?, NOW())";
 		try {
 			conn = dataSource.getConnection();
 			pstmt = conn.prepareStatement(SQL);

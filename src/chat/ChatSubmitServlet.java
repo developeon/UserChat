@@ -2,6 +2,7 @@ package chat;
 
 import java.io.IOException;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,6 +28,7 @@ public class ChatSubmitServlet extends HttpServlet {
 		else {
 			fromID = URLDecoder.decode(fromID, "UTF-8");
 			toID = URLDecoder.decode(toID, "UTF-8");
+			chatContent = URLDecoder.decode(chatContent, "UTF-8");
 			response.getWriter().write(new ChatDAO().submit(fromID, toID, chatContent) + "");
 		}
 	}

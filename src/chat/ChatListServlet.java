@@ -50,7 +50,7 @@ public class ChatListServlet extends HttpServlet {
 			result.append("{\"value\" : \"" + chatList.get(i).getChatTime() + "\"}]");
 			if(i != chatList.size() - 1) result.append(",");
 		}
-		result.append("], \"last\" : \"" + chatList.get(chatList.size() -1).getChatID());
+		result.append("], \"last\" : \"" + chatList.get(chatList.size() -1).getChatID() + "\"}");
 		return result.toString();
 	}
 	
@@ -67,7 +67,7 @@ public class ChatListServlet extends HttpServlet {
 			result.append("{\"value\" : \"" + chatList.get(i).getChatTime() + "\"}]");
 			if(i != chatList.size() - 1) result.append(",");
 		}
-		result.append("], \"last\" : \"" + chatList.get(chatList.size() -1).getChatID());
+		result.append("], \"last\" : \"" + chatList.get(chatList.size() -1).getChatID() + "\"}");
 		return result.toString();
 	}
 

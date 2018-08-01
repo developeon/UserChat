@@ -30,7 +30,7 @@
 	<link rel="stylesheet" href="css/bootstrap.css">
 	<link rel="stylesheet" href="css/custom.css">
 	<title>Ajax 회원제 채팅 서비스</title>
-	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script src="js/bootstrap.js"></script>
 	<script type="text/javascript">
 		function autoClosingAlert(selector, delay){
@@ -65,8 +65,35 @@
 			});
 			$('#chatContent').val('');
 		}
+		
+		
+		function addChat(chatName, chatContent, chatTime){
+			$('#chatList').append('<div class ="row">' +
+					'<div class="col-lg-12">' + 
+					'<div class="media">' +
+					'<a class="pull-left" href="#">' +
+					'<img class="media-object img-circle" style="width:30px;height:30px" src="images/icon.png" alt="">' +
+					'</a>' +
+					'<div class="media-body">' +
+					'<h4 class="media-heading">' +
+					chatName +
+					'<span class="small pull-right">' +
+					chatTime +
+					'</span>' +
+					'</h4>' +
+					'<p>' +
+					chatContent +
+					'</p>' +
+					'</div>' +
+					'</div>' +
+					'</div>' +
+					'</div>' +
+					'<hr>');
+			$('#chatList').scrollTop($('#chatList')[0].scrollHeight);
+		}
+		
 		var lastID = 0;
-		function chatListfunction(type){
+		function chatListFunction(type){
 			var fromID = '<%=userID%>';
 			var toID = '<%=toID%>';
 			$.ajax({
@@ -89,31 +116,6 @@
 			});
 		}
 		
-		function addChat(chatName, chatContent, chatTime){
-			$('#chatList').append('<div class ="row">' +
-					'<div class="col-lg-12">' + 
-					'<div class="media">' +
-					'<a class="pull-left" href="#"' +
-					'<img class="media-object img-circle" style="width:30px;height:30px" src="images/icon.png" alt=""' +
-					'</a>' +
-					'<div class="media-body"'> +
-					'<h4 class="media-heading">' +
-					chatName +
-					'<span class="small pull-right">' +
-					chatTime +
-					'</span>' +
-					'</h4>' +
-					'<p>' +
-					chatContent +
-					'</p>' +
-					'</div>' +
-					'</div>' +
-					'</div>' +
-					'</div>' +
-					'<hr>');
-		}
-		
-		$('%chatList').scrollTop($('#chatList')[0].scrollHeight);
 		function getInfiniteChat(){
 			setInterval(function (){
 				chatListFunction(lastID);

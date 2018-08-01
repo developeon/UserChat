@@ -10,7 +10,7 @@
 	username="root"
 	password="root"
 	testOnBorrow="true"
-	url="jdbc:mysql://localhost:3306/UserChat"/>
+	url="jdbc:mysql://localhost:3306/UserChat?useSSL=false"/>
 <ResourceLink type="javax.sql.data.DataSource"
 	name="jdbc/UserChat"
 	global="jdbc/UserChat"/>

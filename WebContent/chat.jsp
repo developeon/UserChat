@@ -121,6 +121,11 @@
 				chatListFunction(lastID);
 			}, 3000);
 		}
+		
+		$(document).ready(function(){
+			chatListFunction('ten'); 
+			getInfiniteChat();
+		});
 	</script>
 </head>
 <body>
@@ -240,11 +245,5 @@
 		session.removeAttribute("messageContent");
 		}
 	%>
-	<script type="text/javascript">
-		$(document).ready(function(){
-			chatListFunction('ten'); 
-			getInfiniteChat();
-		});
-	</script>
 </body>
 </html>

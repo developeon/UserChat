@@ -56,6 +56,7 @@
 						data-toggle="dropdown" role="button" aria-haspopup="ture"
 						aria-expanded="false">회원관리<span class="caret"></span></a>
 					<ul class="dropdown-menu">
+						<li><a href="find.jsp">친구찾기</a></li>
 						<li><a href="logoutAction.jsp">로그아웃</a></li>
 					</ul>
 				</li>

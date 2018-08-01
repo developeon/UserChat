@@ -59,7 +59,7 @@ public class ChatDAO {
 			try {
 				if(rs != null) rs.close();
 				if(pstmt != null) pstmt.close();
-				if(conn != null) pstmt.close();
+				if(conn != null) conn.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -104,7 +104,7 @@ public class ChatDAO {
 			try {
 				if(rs != null) rs.close();
 				if(pstmt != null) pstmt.close();
-				if(conn != null) pstmt.close();
+				if(conn != null) conn.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -128,7 +128,7 @@ public class ChatDAO {
 		}finally {
 			try {
 				if(pstmt != null) pstmt.close();
-				if(conn != null) pstmt.close();
+				if(conn != null) conn.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

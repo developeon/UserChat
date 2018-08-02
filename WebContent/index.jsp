@@ -3,6 +3,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<%
+		String userID = null;
+		if (session.getAttribute("userID") != null) {
+			userID = (String) session.getAttribute("userID");
+		}
+	%>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="css/bootstrap.css">
@@ -10,14 +16,37 @@
 	<title>Ajax 회원제 채팅 서비스</title>
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 	<script src="js/bootstrap.js"></script>
+	<script type="text/javascript">
+	function getUnread(){
+		$.ajax({
+			type : 'POST',
+			url : "./chatUnread",
+			data : {
+				userID : encodeURIComponent('<%=userID%>')
+			},
+			success : function(result){
+				if(result >= 1){
+					showUnread(result);
+				} else{
+					showUnread('0');
+				}
+			}
+		});
+	}
+		
+		function getInfiniteUnread(){
+			getUnread();
+			setInterval(function(){
+				getUnread();
+			}, 4000);
+		}
+		
+		function showUnread(result){
+			$('#unread').html(result);
+		}
+	</script>
 </head>
 <body>
-	<%
-		String userID = null;
-		if (session.getAttribute("userID") != null) {
-			userID = (String) session.getAttribute("userID");
-		}
-	%>
 	<nav class="navbar navbar-default">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle collapsed"
@@ -31,7 +60,9 @@
 		</div>
 		<div class="collpase navbar-collapse" id ="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
-				<li class="active"><a href="index.jsp">메인</a>
+				<li class="active"><a href="index.jsp">메인</a></li>
+				<li><a href="find.jsp">친구찾기</a></li>
+				<li><a href="box.jsp">메세지함<span id="unread" class="label label-info"></span></a></li>
 			</ul>
 			<% 
 				if(userID ==null) { 
@@ -57,6 +88,7 @@
 						aria-expanded="false">회원관리<span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li><a href="find.jsp">친구찾기</a></li>
+						<li><a href="box.jsp">메세지함<span id="unread" class="label label-info"></span></a></li>
 						<li><a href="logoutAction.jsp">로그아웃</a></li>
 					</ul>
 				</li>
@@ -149,6 +181,17 @@
 	<script>
 		$('#messageModal').modal("show");
 	</script>
+	<%
+		if(userID != null){
+	%>
+			<script type="text/javascript">
+				$(document).ready(function(){
+					getInfiniteUnread();
+				});
+			</script>
+	<%
+		}
+	%>
 	<%
 		session.removeAttribute("messageType");
 		session.removeAttribute("messageContent");

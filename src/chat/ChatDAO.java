@@ -170,7 +170,7 @@ public class ChatDAO {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		String SQL = "SELECT COUNT(*) FROM CHAT WHERE toID = ? AND chatRead = 0";
+		String SQL = "SELECT COUNT(chatID) FROM CHAT WHERE toID = ? AND chatRead = 0";
 		
 		try {
 			conn = dataSource.getConnection();

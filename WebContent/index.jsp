@@ -16,6 +16,7 @@
 	<title>Ajax 회원제 채팅 서비스</title>
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 	<script src="js/bootstrap.js"></script>
+	<!-- 안읽은 메세지 개수 출력 기능 script -->
 	<script type="text/javascript">
 	function getUnread(){
 		$.ajax({
@@ -28,14 +29,13 @@
 				if(result >= 1){
 					showUnread(result);
 				} else{
-					showUnread('0');
+					showUnread('');
 				}
 			}
 		});
 	}
 		
 		function getInfiniteUnread(){
-			getUnread();
 			setInterval(function(){
 				getUnread();
 			}, 4000);
@@ -62,7 +62,7 @@
 			<ul class="nav navbar-nav">
 				<li class="active"><a href="index.jsp">메인</a></li>
 				<li><a href="find.jsp">친구찾기</a></li>
-				<li><a href="box.jsp">메세지함<span id="unread" class="label label-info"></span></a></li>
+				<li><a href="box.jsp">메시지함<span id="unread" class="label label-info"></span></a></li>
 			</ul>
 			<% 
 				if(userID ==null) { 
@@ -88,7 +88,7 @@
 						aria-expanded="false">회원관리<span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li><a href="find.jsp">친구찾기</a></li>
-						<li><a href="box.jsp">메세지함<span id="unread" class="label label-info"></span></a></li>
+						<li><a href="box.jsp">메시지함<span id="unread" class="label label-info"></span></a></li>
 						<li><a href="logoutAction.jsp">로그아웃</a></li>
 					</ul>
 				</li>
@@ -182,21 +182,23 @@
 		$('#messageModal').modal("show");
 	</script>
 	<%
+		session.removeAttribute("messageType");
+		session.removeAttribute("messageContent");
+		}
+	%>
+	<!-- 모달 팝업창 End -->
+	
+	<%
 		if(userID != null){
 	%>
 			<script type="text/javascript">
 				$(document).ready(function(){
+					getUnread();
 					getInfiniteUnread();
 				});
 			</script>
 	<%
 		}
 	%>
-	<%
-		session.removeAttribute("messageType");
-		session.removeAttribute("messageContent");
-		}
-	%>
-	<!-- 모달 팝업창 End -->
 </body>
 </html>

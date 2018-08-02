@@ -10,8 +10,9 @@
 		}
 		if(userID == null){
 			session.setAttribute("messageType", "오류 메세지");
-			session.setAttribute("messageContent", "현재 로그인이 되어있지 않습니다.");
+			session.setAttribute("messageContent", "로그인이 되어있지 않습니다.");
 			response.sendRedirect("index.jsp");
+			return;
 		}
 	%>
 	<meta charset="UTF-8">
@@ -23,70 +24,70 @@
 	<script src="js/bootstrap.js"></script>
 	<!-- 안읽은 메세지 개수 출력 기능 script -->
 	<script type="text/javascript">
-	function getUnread(){
-		$.ajax({
-			type : 'POST',
-			url : "./chatUnread",
-			data : {
-				userID : encodeURIComponent('<%=userID%>')
-			},
-			success : function(result){
-				if(result >= 1){
-					showUnread(result);
-				} else{
-					showUnread('');
+		function getUnread(){
+			$.ajax({
+				type : 'POST',
+				url : "./chatUnread",
+				data : { userID : encodeURIComponent('<%=userID%>') },
+				success : function(result) {
+					if (result >= 1) {
+						showUnread(result);
+					} else {
+						showUnread('');
+					}
 				}
-			}
-		});
-	}
-		
-		function getInfiniteUnread(){
-			setInterval(function(){
+			});
+		}
+
+		function getInfiniteUnread() {
+			setInterval(function() {
 				getUnread();
 			}, 4000);
 		}
-		
-		function showUnread(result){
+
+		function showUnread(result) {
 			$('#unread').html(result);
 		}
 	</script>
-	<!-- 친구 찾기 기능 script -->
+	<!-- 메세지함 기능 script -->
 	<script type="text/javascript">
-		function findFunction(){
-			var userID = $('#findID').val();
+		function chatBoxFunction(){
+			var userID = '<%=userID%>';
 			$.ajax({
 				type : 'POST',
-				url : './UserRegisterCheckServlet',
-				data : { userID : userID },
-				success : function(result){
-					if(result == 0){
-						$('#checkMessage').html('친구찾기에 성공했습니다.');
-						$('#checkType').attr('class', 'modal-content panel-success');
-						getFriend(userID);
-					} else{
-						$('#checkMessage').html('친구를 찾을 수 없습니다.');
-						$('#checkType').attr('class', 'modal-content panel-warning');
-						failFriend();
+				url : "./chatBox",
+				data : { userID : encodeURIComponent('<%=userID%>') },
+				success : function(data) {
+					if(data == "") return;
+					$('#boxTable').html('');
+					var parsed = JSON.parse(data);
+					var result = parsed.result;
+					for(var i = 0; i<result.length; i++){
+						if(result[i][0].value == userID){
+							result[i][0].value = result[i][1].value;
+						} else{
+							result[i][1].value = result[i][0].value;
+						}
+						addBox(result[i][0].value, result[i][1].value, result[i][2].value, result[i][3].value);
 					}
-					$('#checkModal').modal("show");
 				}
 			});
 		}
 		
-		function getFriend(findID){
-			$('#friendResult').html('<thead>' +
-					'<tr>' + 
-					'<th><h4>검색결과</h4></th>' + 
-					'</thead>' +
-					'<tbody>' +
-					'<tr>' +
-					'<td style="text-align:center;"><h3>' + findID + '</h3><a href="chat.jsp?toID=' + encodeURIComponent(findID) + '" class="btn btn-primary pull-right">' + '메세지 보내기</a></td>' +
-					'</tr>' +
-					'</tbody>');
+		function addBox(lastID, toID, chatContent, chatTime){
+			$('#boxTable').append('<tr onclick="location.href=\'chat.jsp?toID=' + encodeURIComponent(toID) + '\'">' +
+					'<td style="width:150px;"><h5>' + lastID + '</h5></td>' +
+					'<td>' +
+					'<h5>' + chatContent + '</h5>' +
+					'<div class="pull-right">' + chatTime + '</div>' +
+					'</td>' + 
+ 					'</tr>');
 		}
 		
-		function failFriend(){
-			$('#friendResult').html('');
+		function getInfiniteBox(){
+			setInterval(function(){
+				chatBoxFunction();
+			},3000);
 		}
 	</script>
 </head>
@@ -104,9 +105,9 @@
 		</div>
 		<div class="collpase navbar-collapse" id ="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
-				<li><a href="index.jsp">메인</a>
+				<li><a href="index.jsp">메인</a></li>
 				<li><a href="find.jsp">친구찾기</a></li>
-				<li><a href="box.jsp">메시지함<span id="unread" class="label label-info"></span></a></li>
+				<li class="active"><a href="box.jsp">메시지함<span id="unread" class="label label-info"></span></a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown">
@@ -114,37 +115,33 @@
 						data-toggle="dropdown" role="button" aria-haspopup="ture"
 						aria-expanded="false">회원관리<span class="caret"></span></a>
 					<ul class="dropdown-menu">
-						<li class="active"><a href="find.jsp">친구찾기</a></li>
-						<li><a href="box.jsp">메시지함<span id="unread" class="label label-info"></span></a></li>
+						<li><a href="find.jsp">친구찾기</a></li>
+						<li class="active"><a href="box.jsp">메시지함<span id="unread" class="label label-info"></span></a></li>
 						<li><a href="logoutAction.jsp">로그아웃</a></li>
 					</ul>
 				</li>
 			</ul>	
 		</div>
 	</nav>
-	
 	<div class="container">
-		<table class="table table-bordered table-hover" style="text-align: center;border: 1px solid #dddddd">
+		<table class="table" style="margin:0 auto;">
 			<thead>
 				<tr>
-					<th colspan="2"><h4>검색으로 친구찾기</h4></th>
+					<th><h4>주고받은 메세지 목록</h4></th>
 				</tr>
 			</thead>
-			<tbody>
-				<tr>
-					<td style="width: 110px"><h5>친구 아이디</h5></td>
-					<td><input type="text" class="form-control" id="findID" maxlength="20" placeholder="찾을 아이디를 입력해주세요."></td>
-				</tr>
-				<tr>
-					<td colspan="2"><button class="btn btn-primary pull-right" onclick="findFunction();">검색</button></td>
-				</tr>
-			</tbody>
+			<div style="overflow-y: auto;width: 100%;max-height: 450px">
+				<table class="table table-bordered table-hover" style="text-align: center;border: 1px solid #dddddd;margin: 0 auto;">
+					<tbody id="boxTable">
+					</tbody>
+				</table>
+			</div>
 		</table>
 	</div>
-	<div class="container">
-		<table id="friendResult" class="table table-bordered table-hover" style="text-align: center;border: 1px solid #dddddd">
-		</table>
-	</div>
+	
+	
+	
+
 	
 	<!-- 모달 팝업창 Start -->
 	<%
@@ -190,28 +187,6 @@
 	%>
 	<!-- 모달 팝업창 End -->
 	
-	<div class="modal fade" id="checkModal" tabindex="1" role="dialog" aria-hidden="ture">
-		<div class="vertical-alignment-helper">
-			<div class="modal-dialog vertical-align-center">
-				<div id="checkType" class="modal-content panel-info">
-					<div class="modal-header panel-heading">
-						<button type="button" class="close" data-dismiss="modal">
-							<span aria-hidden="true">&times;</span>
-							<span class="sr-only">Close</span>
-						</button>
-						<h4 class="modal-title">확인 메세지</h4>
-					</div>
-					<div id="checkMessage" class="modal-body">
-						<%= messageContent %>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-primary" data-dismiss="modal">확인</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	
 	<%
 		if(userID != null){
 	%>
@@ -219,6 +194,8 @@
 				$(document).ready(function(){
 					getUnread();
 					getInfiniteUnread();
+					chatBoxFunction();
+					getInfiniteBox();
 				});
 			</script>
 	<%

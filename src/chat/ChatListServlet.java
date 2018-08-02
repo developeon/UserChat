@@ -25,19 +25,19 @@ public class ChatListServlet extends HttpServlet {
 		if(fromID == null || fromID.equals("") || toID == null || toID.equals("") || listType == null || listType.equals("")) {
 			response.getWriter().write("");
 		}
-		else if(listType.equals("ten")) {
+		/*else if(listType.equals("ten")) {
 			response.getWriter().write(getTen(URLDecoder.decode(fromID, "UTF-8"), URLDecoder.decode(toID, "UTF-8")));
-		}
+		}*/
 		else {
 			try {
-				response.getWriter().write(getID(URLDecoder.decode(fromID, "UTF-8"), URLDecoder.decode(toID, "UTF-8"), listType));
+				response.getWriter().write(getID(URLDecoder.decode(fromID, "UTF-8"), URLDecoder.decode(toID, "UTF-8"), listType)); /*listType은 chatID > ? 에서 ?의 역할. 변수명 잘못 지음 */
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
-	public String getTen(String fromID, String toID) {
+	/*public String getTen(String fromID, String toID) {
 		StringBuffer result = new StringBuffer("");
 		result.append("{\"result\" : [");
 		ChatDAO chatDAO = new ChatDAO();
@@ -53,7 +53,7 @@ public class ChatListServlet extends HttpServlet {
 		result.append("], \"last\" : \"" + chatList.get(chatList.size() -1).getChatID() + "\"}");
 		chatDAO.readChat(fromID, toID);
 		return result.toString();
-	}
+	}*/
 	
 	public String getID(String fromID, String toID, String chatID) {
 		StringBuffer result = new StringBuffer("");

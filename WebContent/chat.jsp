@@ -32,6 +32,36 @@
 	<title>Ajax 회원제 채팅 서비스</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script src="js/bootstrap.js"></script>
+	<!-- 안읽은 메세지 개수 출력 기능 script -->
+	<script type="text/javascript">
+	function getUnread(){
+		$.ajax({
+			type : 'POST',
+			url : "./chatUnread",
+			data : {
+				userID : encodeURIComponent('<%=userID%>')
+			},
+			success : function(result){
+				if(result >= 1){
+					showUnread(result);
+				} else{
+					showUnread('');
+				}
+			}
+		});
+	}
+		
+		function getInfiniteUnread(){
+			setInterval(function(){
+				getUnread();
+			}, 4000);
+		}
+		
+		function showUnread(result){
+			$('#unread').html(result);
+		}
+	</script>
+	<!-- 채팅 기능 script -->
 	<script type="text/javascript">
 		function autoClosingAlert(selector, delay){
 			var alert = $(selector).alert();
@@ -72,7 +102,7 @@
 					'<div class="col-lg-12">' + 
 					'<div class="media">' +
 					'<a class="pull-left" href="#">' +
-					'<img class="media-object img-circle" style="width:30px;height:30px" src="images/icon.png" alt="">' +
+					'<img class="media-object img-circle" style="width:30px;height:30px" src="images/default.png" alt="">' +
 					'</a>' +
 					'<div class="media-body">' +
 					'<h4 class="media-heading">' +
@@ -102,7 +132,7 @@
 				data : {
 					fromID : encodeURIComponent(fromID),
 					toID : encodeURIComponent(toID),
-					listType : type
+					listType : type /*처음에는 chatID가 0 이상인것부터 쭉, 그다음부터는 lastID 이후로 쭉(lastID는 계속 업데이트됨)*/
 				},
 				success : function(data){
 					if(data == "") return;
@@ -126,7 +156,9 @@
 		}
 		
 		$(document).ready(function(){
-			chatListFunction('ten'); 
+			getUnread();
+			getInfiniteUnread(); /* 메세지함 script */
+			chatListFunction('0'); 
 			getInfiniteChat();
 		});
 	</script>
@@ -146,6 +178,8 @@
 		<div class="collpase navbar-collapse" id ="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
 				<li class="active"><a href="index.jsp">메인</a>
+				<li><a href="find.jsp">친구찾기</a></li>
+				<li><a href="box.jsp">메시지함<span id="unread" class="label label-info"></span></a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown">
@@ -154,6 +188,7 @@
 						aria-expanded="false">회원관리<span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li><a href="find.jsp">친구찾기</a></li>
+						<li><a href="box.jsp">메시지함<span id="unread" class="label label-info"></span></a></li>
 						<li><a href="logoutAction.jsp">로그아웃</a></li>
 					</ul>
 				</li>
